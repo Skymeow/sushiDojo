@@ -12,14 +12,22 @@ import SpriteKit
 enum Side {
     case left, right, none
 }
+// for game state
+enum GameState {
+    case title, ready, playing, gameOver
+}
 
 class GameScene: SKScene {
     
 //    var sushiBasePiece: SushiPiece?
     var sushiTower = [SushiPiece]()
     lazy var sushiBasePiece = childNode(withName: "sushiBasePiece") as! SushiPiece
-    lazy var character = childNode(withName: "chacharacter") as! Character
+    lazy var character = childNode(withName: "character") as! Character
     
+    var state: GameState = .title
+    
+    lazy var playButton = childNode(withName: "playButton") as! MSButtonNode
+   
     override func didMove(to view: SKView) {
         super.didMove(to: view)
       
@@ -29,6 +37,11 @@ class GameScene: SKScene {
         addTowerPiece(side: .none)
         addTowerPiece(side: .right)
         addRandomPieces(total: 10)
+        
+//        start the game when press the button
+        playButton.selectedHandler = {
+            self.state = .ready
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -41,6 +54,25 @@ class GameScene: SKScene {
         } else {
             character.side = .left
         }
+        
+        // MARK:  remove the item on top of the base item and add a random one
+        if let firstPiece = sushiTower.first {
+            sushiTower.removeFirst()
+//            remove child node
+            firstPiece.flip(character.side)
+            addRandomPieces(total: 1)
+        }
+        
+//        stop if game not ready to play
+        if state == .gameOver || state == .title {return}
+//        first touch game
+        if state == .ready {
+            state = .playing
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        moveTowerDown()
     }
     
     func addTowerPiece(side: Side) {
@@ -78,6 +110,15 @@ class GameScene: SKScene {
                     addTowerPiece(side: .none)
                 }
             }
+        }
+    }
+    
+    func moveTowerDown() {
+        var n: CGFloat = 0
+        for piece in sushiTower {
+            let y = (n * 55) + 215
+            piece.position.y -= (piece.position.y - y) * 0.5
+            n += 1
         }
     }
     
