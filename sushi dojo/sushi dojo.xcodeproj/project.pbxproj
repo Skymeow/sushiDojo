@@ -18,7 +18,6 @@
 		F97EE25D204234A40090E088 /* sfx_swipe.caf in Resources */ = {isa = PBXBuildFile; fileRef = F97EE25C204234A40090E088 /* sfx_swipe.caf */; };
 		F97EE25F204234BB0090E088 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97EE25E204234BB0090E088 /* MSButtonNode.swift */; };
 		F97EE2612042453A0090E088 /* assets.atlas in Resources */ = {isa = PBXBuildFile; fileRef = F97EE2602042453A0090E088 /* assets.atlas */; };
-		F9C2E1AB2047D2360044D138 /* AnimationActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = F9C2E1AA2047D2360044D138 /* AnimationActions.sks */; };
 		F9D4ADE6204772A9005F02EB /* SushiPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D4ADE5204772A9005F02EB /* SushiPiece.swift */; };
 		F9D4ADE820477BEC005F02EB /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D4ADE720477BEC005F02EB /* Character.swift */; };
 /* End PBXBuildFile section */
@@ -37,7 +36,6 @@
 		F97EE25C204234A40090E088 /* sfx_swipe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sfx_swipe.caf; sourceTree = "<group>"; };
 		F97EE25E204234BB0090E088 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		F97EE2602042453A0090E088 /* assets.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = assets.atlas; sourceTree = "<group>"; };
-		F9C2E1AA2047D2360044D138 /* AnimationActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = AnimationActions.sks; sourceTree = "<group>"; };
 		F9D4ADE5204772A9005F02EB /* SushiPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SushiPiece.swift; sourceTree = "<group>"; };
 		F9D4ADE720477BEC005F02EB /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,7 +73,6 @@
 				F97EE243204233A60090E088 /* AppDelegate.swift */,
 				F97EE245204233A60090E088 /* GameScene.sks */,
 				F97EE247204233A60090E088 /* Actions.sks */,
-				F9C2E1AA2047D2360044D138 /* AnimationActions.sks */,
 				F97EE249204233A60090E088 /* GameScene.swift */,
 				F9D4ADE920478DBA005F02EB /* GameProperty */,
 				F97EE24B204233A60090E088 /* GameViewController.swift */,
@@ -170,7 +167,6 @@
 				F97EE25D204234A40090E088 /* sfx_swipe.caf in Resources */,
 				F97EE246204233A60090E088 /* GameScene.sks in Resources */,
 				F97EE2612042453A0090E088 /* assets.atlas in Resources */,
-				F9C2E1AB2047D2360044D138 /* AnimationActions.sks in Resources */,
 				F97EE251204233A60090E088 /* Assets.xcassets in Resources */,
 				F97EE254204233A60090E088 /* LaunchScreen.storyboard in Resources */,
 				F97EE248204233A60090E088 /* Actions.sks in Resources */,

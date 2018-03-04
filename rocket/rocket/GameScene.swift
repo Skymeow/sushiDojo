@@ -28,8 +28,9 @@ class GameScene: SKScene {
     }
 //    create rocket
     func makeRocket() {
-        let size = CGSize(width: 20, height: 10)
-        rocket = SKSpriteNode(color: UIColor.blue, size: size)
+        let size = CGSize(width: 50, height: 50)
+        let texture = SKTexture(imageNamed: "box")
+        rocket = Rocket(texture: texture, color: UIColor.blue, size: size)
         addChild(rocket)
         rocket.position.x = self.size.width / 2
         rocket.position.y = self.size.height / 5

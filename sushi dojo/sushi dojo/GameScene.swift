@@ -57,6 +57,11 @@ class GameScene: SKScene {
         
         // MARK:  remove the item on top of the base item and add a random one
         if let firstPiece = sushiTower.first {
+//            check character side against sushi piece side
+            if character.side == firstPiece.side {
+                gameOver()
+                return
+            }
             sushiTower.removeFirst()
 //            remove child node
             firstPiece.flip(character.side)
@@ -113,12 +118,36 @@ class GameScene: SKScene {
         }
     }
     
+    //    MARK: don't work
     func moveTowerDown() {
         var n: CGFloat = 0
         for piece in sushiTower {
             let y = (n * 55) + 215
             piece.position.y -= (piece.position.y - y) * 0.5
             n += 1
+        }
+    }
+    
+    func gameOver() {
+        state = .gameOver
+//        turn all the sushi to be red
+        for sushiPiece in sushiTower {
+            sushiPiece.run(SKAction.colorize(with: UIColor.red, colorBlendFactor: 1.0, duration: 0.5))
+        }
+//        turn base to red
+        sushiBasePiece.run(SKAction.colorize(with: UIColor.red, colorBlendFactor: 1.0, duration: 0.5))
+//        make player turn red
+        character.run(SKAction.colorize(with: UIColor.red, colorBlendFactor: 1.0, duration: 0.5))
+//        change play button selection handler
+        playButton.selectedHandler = {
+//            grab reference to spriteKit view
+            let skView = self.view as SKView!
+//            load game scene
+            guard let scene = GameScene(fileNamed: "GameScene") as! GameScene! else { return }
+            scene.scaleMode = .aspectFill
+            
+//            restart
+            skView?.presentScene(scene)
         }
     }
     
