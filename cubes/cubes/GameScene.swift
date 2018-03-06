@@ -9,17 +9,46 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     var start: CGPoint?
     var horizontalStart: CGPoint?
     var player: SKSpriteNode!
+    var coin: SKSpriteNode!
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        
+        switch collision {
+        case Category.car | Category.player:
+            let emitter = SKEmitterNode(fileNamed: "ParticleCollision")!
+            player.addChild(emitter)
+            
+            let fadeOut = SKAction.fadeOut(withDuration: 1)
+            let disappear = SKAction.removeFromParent()
+            let sequence = SKAction.sequence([fadeOut, disappear])
+            player.run(sequence)
+            
+        case Category.player | Category.coin:
+            coin.removeFromParent()
+            player.addChild(coin)
+            let fadeOut = SKAction.fadeOut(withDuration: 1)
+            let disappear = SKAction.removeFromParent()
+            let sequence = SKAction.sequence([fadeOut, disappear])
+            coin.run(sequence)
+            
+        default:
+            return
+        }
+    }
 //    like viewdidappear (life cycle method)
     override func didMove(to view: SKView) {
-        
+        physicsWorld.contactDelegate = self
+        physicsWorld.gravity = CGVector.zero
+
         makeBoard(3, 3)
         movePlayer()
         makePlayer()
-        
+        makeCoin()
         let wait = SKAction.wait(forDuration: 1)
         let spawnEnemy = SKAction.run {
             self.generateStart { (success) in
@@ -92,6 +121,11 @@ class GameScene: SKScene {
         box.position.x = startX
         box.position.y = startY
         
+        box.physicsBody = SKPhysicsBody(rectangleOf: size)
+        box.physicsBody?.categoryBitMask = Category.car
+        box.physicsBody?.contactTestBitMask = Category.player
+        box.physicsBody?.collisionBitMask = Category.none /// 0
+        
         return box
         
     }
@@ -146,6 +180,31 @@ class GameScene: SKScene {
         box.position.x = 200
         box.position.y = 200
         player = box
+        
+        //    MARK:  trigger the delegate
+        
+//        attaching physics to the player
+        player.physicsBody = SKPhysicsBody(rectangleOf: size)
+//        set category to be the category we defined
+        player.physicsBody?.categoryBitMask = Category.player
+//        set up contact
+        player.physicsBody?.contactTestBitMask = Category.car | Category.coin
+//        reset player not be collised with other object, caz we have 3s fadeout
+        player.physicsBody?.collisionBitMask = Category.none
+    }
+    
+    func makeCoin() {
+        let xArr: [CGFloat] = [142, 207, 272]
+        let yArr: [CGFloat] = [303, 368, 433]
+        let pointx = xArr[Int(arc4random_uniform(UInt32(xArr.count)))]
+        let pointy = yArr[Int(arc4random_uniform(UInt32(yArr.count)))]
+        let color = UIColor.yellow
+        let size = CGSize(width: 40, height: 40)
+        coin = SKSpriteNode(color: color, size: size)
+        addChild(coin)
+        coin.position.x = pointx
+        coin.position.y = pointy
+        
     }
     
     func makeStripe(width: CGFloat, height: CGFloat) -> SKSpriteNode {
