@@ -12,7 +12,7 @@ import GameplayKit
 enum GameState {
     case title, ready, playing, gameOver
 }
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var rocket: SKSpriteNode!
     var angle: CGFloat = CGFloat(30/360 * Double.pi)
@@ -28,6 +28,9 @@ class GameScene: SKScene {
     // Keep score
     
     override func didMove(to view: SKView) {
+        physicsWorld.contactDelegate = self
+        physicsWorld.gravity = CGVector.zero
+        
         width = self.view?.frame.width
         height = self.view?.frame.height
         makeRocket()
@@ -40,6 +43,21 @@ class GameScene: SKScene {
         rotationV = 0
     }
     
+    func didBegin(_ contact: SKPhysicsContact) {
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        
+        switch collision {
+        case Category.rocket | Category.planet:
+            let emitter = SKEmitterNode(fileNamed: "FireFlies")!
+            rocket.addChild(emitter)
+            let fadeOut = SKAction.fadeOut(withDuration: 1)
+            let disappear = SKAction.removeFromParent()
+            let sequence = SKAction.sequence([fadeOut, disappear])
+            rocket.run(sequence)
+        default:
+            return
+        }
+    }
 
     override func update(_ currentTime: TimeInterval) {
         angle += rotationV/360 * CGFloat(Double.pi)
@@ -62,19 +80,27 @@ class GameScene: SKScene {
         addChild(rocket)
         rocket.position.x = self.size.width / 3
         rocket.position.y = self.size.height / 8
+        
+        rocket.physicsBody = SKPhysicsBody(rectangleOf: size)
+        rocket.physicsBody?.contactTestBitMask = Category.rocket | Category.planet
+        rocket.physicsBody?.categoryBitMask = Category.rocket
+        rocket.physicsBody?.collisionBitMask = Category.none
     }
     
 //    make targets
     func makeTargets(num: Int) {
         let size = CGSize(width: 45, height: 45)
         let texture = SKTexture(imageNamed: "target")
-        let target = Target(texture: texture, color: UIColor.blue, size: size)
-        self.targets = Array(repeatElement(target, count: num))
         
         let positions = generateMutiTarget(num: num)
-        for (index, element) in targets.enumerated() {
-            element.position = positions[index]
-            addChild(element)
+        for position in positions {
+            let target = Target(texture: texture, color: UIColor.blue, size: size)
+            target.position = position
+            addChild(target)
+            target.physicsBody = SKPhysicsBody(rectangleOf: size)
+            target.physicsBody?.contactTestBitMask = Category.rocket | Category.planet
+            target.physicsBody?.categoryBitMask = Category.planet
+            target.physicsBody?.collisionBitMask = Category.none
         }
     }
     

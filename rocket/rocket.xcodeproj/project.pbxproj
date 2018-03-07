@@ -15,6 +15,9 @@
 		F9C2E1C620487EA70044D138 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9C2E1C520487EA70044D138 /* Assets.xcassets */; };
 		F9C2E1C920487EA70044D138 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9C2E1C720487EA70044D138 /* LaunchScreen.storyboard */; };
 		F9C2E1D12048890D0044D138 /* Rocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C2E1D02048890D0044D138 /* Rocket.swift */; };
+		F9EB62FD204F70F600F0B20E /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EB62FC204F70F600F0B20E /* Category.swift */; };
+		F9EB6300204F758000F0B20E /* FireFlies.sks in Resources */ = {isa = PBXBuildFile; fileRef = F9EB62FE204F758000F0B20E /* FireFlies.sks */; };
+		F9EB6301204F758000F0B20E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9EB62FF204F758000F0B20E /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		F9C2E1C820487EA70044D138 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F9C2E1CA20487EA70044D138 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9C2E1D02048890D0044D138 /* Rocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rocket.swift; sourceTree = "<group>"; };
+		F9EB62FC204F70F600F0B20E /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		F9EB62FE204F758000F0B20E /* FireFlies.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireFlies.sks; sourceTree = "<group>"; };
+		F9EB62FF204F758000F0B20E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				F9C2E1BE20487EA70044D138 /* GameScene.swift */,
+				F9EB62FC204F70F600F0B20E /* Category.swift */,
 			);
 			path = Mechanics;
 			sourceTree = "<group>";
@@ -54,6 +61,8 @@
 			children = (
 				F9C2E1D02048890D0044D138 /* Rocket.swift */,
 				F91640E0204C7B7D001BEF4A /* Target.swift */,
+				F9EB62FE204F758000F0B20E /* FireFlies.sks */,
+				F9EB62FF204F758000F0B20E /* Assets.xcassets */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -149,8 +158,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9C2E1C420487EA70044D138 /* Main.storyboard in Resources */,
+				F9EB6300204F758000F0B20E /* FireFlies.sks in Resources */,
 				F9C2E1C620487EA70044D138 /* Assets.xcassets in Resources */,
 				F9C2E1C920487EA70044D138 /* LaunchScreen.storyboard in Resources */,
+				F9EB6301204F758000F0B20E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +177,7 @@
 				F9C2E1B920487EA70044D138 /* AppDelegate.swift in Sources */,
 				F9C2E1D12048890D0044D138 /* Rocket.swift in Sources */,
 				F91640E1204C7B7D001BEF4A /* Target.swift in Sources */,
+				F9EB62FD204F70F600F0B20E /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
