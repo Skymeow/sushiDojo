@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import UIKit
 
 enum GameState {
     case title, ready, playing, gameOver
@@ -22,25 +23,65 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var height: CGFloat?
     var targets = [Target]()
     var state: GameState = .title
-    // Reset the rocket after it leaves the screen
-    // make target show up at a random position
-    // detect if the rocket hits the target
-    // Keep score
+    var followPath: SKAction?
+    
+    var pathSprite = SKShapeNode()
+//    make path
+//    make rocket to folllow path
     
     override func didMove(to view: SKView) {
-        physicsWorld.contactDelegate = self
+//        physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector.zero
         
         width = self.view?.frame.width
         height = self.view?.frame.height
+        
         makeRocket()
+    
         makeTargets(num: 5)
+        moveRocket()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let firstTouch = touches.first else { return }
 //       stop rotation when touch
-        rotationV = 0
+        let r = rocket.zRotation
+        rocket.removeAllActions()
+        let targetx = cos(r) * 300
+        let targety = sin(r) * 300
+        let vector = CGVector(dx: targetx, dy: targety)
+        let launch = SKAction.move(by: vector, duration: 3)
+        rocket.run(launch)
+    }
+    
+    func makePath() -> UIBezierPath {
+        let width = frame.size.width
+        let height = frame.size.height
+//        make points
+        let point1 = CGPoint(x: 0, y: 0)
+        let point2 = CGPoint(x: width * 0.66, y: height * 0.33)
+        let point3 = CGPoint(x: width * 0.33, y: height * 0.66)
+        let point4 = CGPoint(x: width, y: height)
+        
+        let control1 = CGPoint(x: width * 0.1, y: height * 0.33)
+        let control2 = CGPoint(x: width * 0.45, y: height * 0.1)
+        let control3 = CGPoint(x: width * 0.9, y: height * 0.55)
+        let control4 = CGPoint(x: width * 0.25, y: height * 0.65)
+        let control5 = CGPoint(x: width * 0.40, y: height * 0.66)
+        let control6 = CGPoint(x: width * 0.85, y: height * 0.75)
+        let path = UIBezierPath()
+        
+        path.move(to: point1)
+        path.addCurve(to: point2, controlPoint1: control1, controlPoint2: control2)
+        path.addCurve(to: point3, controlPoint1: control3, controlPoint2: control4)
+        path.addCurve(to: point4, controlPoint1: control5, controlPoint2: control6)
+        
+        pathSprite.path = path.cgPath
+        addChild(pathSprite)
+        pathSprite.strokeColor = UIColor.red
+        pathSprite.lineWidth = 4
+        
+        return path
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -60,28 +101,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     override func update(_ currentTime: TimeInterval) {
-        angle += rotationV/360 * CGFloat(Double.pi)
-        
-        let dy = sin(angle) * vel
-        let dx = cos(angle) * vel
-        rocket.position.y += dy
-        rocket.position.x += dx
-        
-        rocket.zRotation = angle
-        //  MARK: reset the rocket back to a new start once it leaves the screen
-        resetRocket()
+//        angle += rotationV/360 * CGFloat(Double.pi)
+//
+//        let dy = sin(angle) * vel
+//        let dx = cos(angle) * vel
+//        rocket.position.y += dy
+//        rocket.position.x += dx
+//
+//        rocket.zRotation = angle
+//        //  MARK: reset the rocket back to a new start once it leaves the screen
+//        resetRocket()
+    }
+    
+    func moveRocket() {
+        let path = makePath()
+        followPath = SKAction.follow(path.cgPath, speed: 25)
+        rocket.run(followPath!)
     }
     
     //    create rocket
     func makeRocket() {
-        let size = CGSize(width: 20, height: 45)
         let texture = SKTexture(imageNamed: "box")
-        rocket = Rocket(texture: texture, color: UIColor.red, size: size)
+        let size = texture.size()
+        let textureWidth = size.width * 0.5
+        let textureHeight = size.height * 0.5
+        
+        rocket = Rocket(texture: texture, color: UIColor.red, size: CGSize(width: textureWidth, height: textureHeight))
         addChild(rocket)
         rocket.position.x = self.size.width / 3
         rocket.position.y = self.size.height / 8
         
-        rocket.physicsBody = SKPhysicsBody(rectangleOf: size)
+        rocket.physicsBody = SKPhysicsBody(circleOfRadius: textureWidth * 0.5)
         rocket.physicsBody?.contactTestBitMask = Category.rocket | Category.planet
         rocket.physicsBody?.categoryBitMask = Category.rocket
         rocket.physicsBody?.collisionBitMask = Category.none
